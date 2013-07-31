@@ -21,7 +21,7 @@
 	uniform float specC;
 	
     varying vec2 vTextureCoord;
-
+	varying float att;
     uniform sampler2D uSampler;
 
 	/// phong variables ///
@@ -43,14 +43,13 @@
 		float ldotn = max(dot(l,n),0.0);
 		if( ldotn > 0.0)
 		{
-		finalColor+= dc*ldotn*diffMat.rgb;
+		finalColor+= att*dc*ldotn*diffMat.rgb;
 		vec3 r=normalize(-reflect(l,n));
-		vec3 EYE = normalize(e);
-		float rdote=max(dot(r,EYE),0.0);
+		float rdote=max(dot(r,e),0.0);
 			if(rdote > 0.0 )
 			{
 			float specPow=clamp(pow(rdote,hardness),0.0,1.0);
-			finalColor += sc*specPow*specMat.rgb;
+			finalColor += att*sc*specPow*specMat.rgb;
 			}
 		}
 		
@@ -74,7 +73,7 @@
     uniform vec3 uPointLightingColor;
 
     varying vec2 vTextureCoord;
-	
+	varying float att;
 	/// phong variables ///
 	varying vec3 n;
 	varying vec3 e;
@@ -86,7 +85,12 @@
         vTextureCoord = aTextureCoord;
 		n = normalize( uNMatrix*aVertexNormal );
 		e = normalize(-mvPosition.xyz);
-		l = normalize(uPointLightingLocation-mvPosition.xyz);
+		vec3 dirToLight = (uPointLightingLocation-mvPosition.xyz);
+		float d = clamp(length(dirToLight),0.0000001, 100000.0);
+		// Apply quadratic depth based attenuation
+		att = 1.0/(0.00002*d*d);
+		
+		l = normalize(dirToLight);
         
     }
 </script>
