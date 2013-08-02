@@ -13,8 +13,10 @@
 	uniform vec4 ambient;
 	uniform vec4 diffuse;
 	uniform vec4 specular;
-	
 	uniform float hardness;
+	uniform vec3 uPointLightingColor;
+	uniform vec3 uAmbientColor;
+	
 	
 	uniform float ambC;
 	uniform float diffC;
@@ -38,18 +40,18 @@
 		float dc = diffC;
 		float sc = specC;
 		
-		vec3 finalColor = ac*ambMat.rgb; 
+		vec3 finalColor = uAmbientColor*ac*ambMat.rgb; 
 		
 		float ldotn = max(dot(l,n),0.0);
 		if( ldotn > 0.0)
 		{
-		finalColor+= att*dc*ldotn*diffMat.rgb;
+		finalColor+= att*uPointLightingColor*dc*ldotn*diffMat.rgb;
 		vec3 r=normalize(-reflect(l,n));
 		float rdote=max(dot(r,e),0.0);
 			if(rdote > 0.0 )
 			{
 			float specPow=clamp(pow(rdote,hardness),0.0,1.0);
-			finalColor += att*sc*specPow*specMat.rgb;
+			finalColor += att*uPointLightingColor*sc*specPow*specMat.rgb;
 			}
 		}
 		
@@ -653,7 +655,7 @@
             <td><b>Location:</b>
             <td>X: <input type="text" id="lightPositionX" value="0.0" />
             <td>Y: <input type="text" id="lightPositionY" value="0.0" />
-            <td>Z: <input type="text" id="lightPositionZ" value="-20.0" />
+            <td>Z: <input type="text" id="lightPositionZ" value="20.0" />
         </tr>
         <tr>
             <td><b>Colour:</b>
