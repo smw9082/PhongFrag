@@ -17,7 +17,6 @@
 	uniform vec3 uPointLightingColor;
 	uniform vec3 uAmbientColor;
 	
-	
 	uniform float ambC;
 	uniform float diffC;
 	uniform float specC;
@@ -70,10 +69,12 @@
     uniform mat3 uNMatrix;
 
     uniform vec3 uAmbientColor;
-
+	uniform sampler2D uSampler;
+	
     uniform vec3 uPointLightingLocation;
     uniform vec3 uPointLightingColor;
-
+	uniform bool uUseAttenuation;
+	
     varying vec2 vTextureCoord;
 	varying float att;
 	/// phong variables ///
@@ -82,6 +83,7 @@
 	varying vec3 l;
 	
     void main(void) {
+		
         vec4 mvPosition = uMVMatrix * vec4(aVertexPosition, 1.0);
         gl_Position = uPMatrix * mvPosition;
         vTextureCoord = aTextureCoord;
@@ -90,8 +92,12 @@
 		vec3 dirToLight = (uPointLightingLocation-mvPosition.xyz);
 		float d = clamp(length(dirToLight),0.0000001, 100000.0);
 		// Apply quadratic depth based attenuation
+		if(uUseAttenuation){
 		att = 1.0/(0.00002*d*d);
-		
+		}
+		else{
+		att = 1.0;
+		}
 		l = normalize(dirToLight);
         
     }
@@ -181,7 +187,7 @@
         shaderProgram.mvMatrixUniform = gl.getUniformLocation(shaderProgram, "uMVMatrix");
         shaderProgram.nMatrixUniform = gl.getUniformLocation(shaderProgram, "uNMatrix");
         shaderProgram.samplerUniform = gl.getUniformLocation(shaderProgram, "uSampler");
-        shaderProgram.useLightingUniform = gl.getUniformLocation(shaderProgram, "uUseLighting");
+        shaderProgram.useAttenuationUniform = gl.getUniformLocation(shaderProgram, "uUseAttenuation");
         shaderProgram.ambientColorUniform = gl.getUniformLocation(shaderProgram, "uAmbientColor");
         shaderProgram.pointLightingLocationUniform = gl.getUniformLocation(shaderProgram, "uPointLightingLocation");
         shaderProgram.pointLightingColorUniform = gl.getUniformLocation(shaderProgram, "uPointLightingColor");
@@ -196,8 +202,7 @@
 		/// smw - material weight/param uniform address
 		shaderProgram.parametersAmb = gl.getUniformLocation(shaderProgram, "ambC");
 		shaderProgram.parametersDiff = gl.getUniformLocation(shaderProgram, "diffC");
-		shaderProgram.parametersSpec = gl.getUniformLocation(
-		shaderProgram, "specC");
+		shaderProgram.parametersSpec = gl.getUniformLocation(shaderProgram, "specC");
     }
 
 
@@ -505,9 +510,9 @@
 
         mat4.perspective(45, gl.viewportWidth / gl.viewportHeight, 0.1, 100.0, pMatrix);
 
-        var lighting = document.getElementById("lighting").checked;
-       
-        if (lighting) {
+        var attenuation = document.getElementById("atten").checked;
+       gl.uniform1i(shaderProgram.useAttenuationUniform, attenuation);
+        if (attenuation) {
             gl.uniform3f(
                 shaderProgram.ambientColorUniform,
                 parseFloat(document.getElementById("ambientR").value),
@@ -552,15 +557,24 @@
 
         gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, moonVertexIndexBuffer);
         setMatrixUniforms();
-		/// smw - pass in uniform material data
-		gl.uniform4f(shaderProgram.materialAmb, 0.5,0.0,0.0,1.0);
-		gl.uniform4f(shaderProgram.materialDiff, 0.0,0.0,0.5,1.0);
-		gl.uniform4f(shaderProgram.materialSpec, 1.0,1.0,1.0,1.0);
-		gl.uniform1f(shaderProgram.hardness, 100.0);
+		/// smw - pass in uniform material data for sphere
+		gl.uniform4f(shaderProgram.materialAmb, 
+                parseFloat(document.getElementById("ambR").value),
+                parseFloat(document.getElementById("ambG").value),
+                parseFloat(document.getElementById("ambB").value), 1.0);
+		gl.uniform4f(shaderProgram.materialDiff, 
+				parseFloat(document.getElementById("diffR").value),
+                parseFloat(document.getElementById("diffG").value),
+                parseFloat(document.getElementById("diffB").value), 1.0);
+		gl.uniform4f(shaderProgram.materialSpec,
+				parseFloat(document.getElementById("specR").value),
+                parseFloat(document.getElementById("specG").value),
+                parseFloat(document.getElementById("specB").value), 1.0);
+		gl.uniform1f(shaderProgram.hardness, parseFloat(document.getElementById("hardness").value));
 		/// smw - pass in uniform parameters 
-		gl.uniform1f(shaderProgram.parametersAmb, 0.2);
-		gl.uniform1f(shaderProgram.parametersDiff, 0.6);
-		gl.uniform1f(shaderProgram.parametersSpec, 0.2);
+		gl.uniform1f(shaderProgram.parametersAmb, document.getElementById("ambW").value);
+		gl.uniform1f(shaderProgram.parametersDiff, document.getElementById("diffW").value);
+		gl.uniform1f(shaderProgram.parametersSpec, document.getElementById("specW").value);
         gl.drawElements(gl.TRIANGLES, moonVertexIndexBuffer.numItems, gl.UNSIGNED_SHORT, 0);
         mvPopMatrix();
 
@@ -584,7 +598,7 @@
         setMatrixUniforms();
 		
 		/// smw - pass in uniform material data
-		gl.uniform4f(shaderProgram.materialAmb, 0.5,0.0,0.0,1.0);
+		gl.uniform4f(shaderProgram.materialAmb, 0.0,0.0,0.5,1.0);
 		gl.uniform4f(shaderProgram.materialDiff, 0.0,0.0,0.5,1.0);
 		gl.uniform4f(shaderProgram.materialSpec, 1.0,1.0,1.0,1.0);
 		gl.uniform1f(shaderProgram.hardness, 1000.0);
@@ -645,7 +659,7 @@
     <canvas id="lesson12-canvas" style="border: none;" width="500" height="500"></canvas>
     <br />
 
-    <input type="checkbox" id="lighting" checked /> Use lighting<br/>
+    <input type="checkbox" id="atten" checked /> Use quadratic attenuation<br/>
     <br/>
 
     <h2>Point light:</h2>
@@ -677,6 +691,36 @@
     </table>
     <br/>
 
+	<h2>Sphere Material:</h2>
+	<table style="border: 0; padding: 10px;">
+		<tr>
+			<td><b>Amb Colour:</b>
+			<td>Weight: <input type="text" id="ambW" value="0.1"/>
+			<td>R: <input type="text" id="ambR" value="1.0" />
+			<td>G: <input type="text" id="ambG" value="1.0" />
+			<td>B: <input type="text" id="ambB" value="1.0" />
+		</tr>
+		
+		<tr>
+			<td><b>Diff Colour:</b>
+			<td>Weight: <input type="text" id="diffW" value="0.6"/>
+			<td>R: <input type="text" id="diffR" value="0.0" />
+			<td>G: <input type="text" id="diffG" value="0.0" />
+			<td>B: <input type="text" id="diffB" value="1.0" />
+		</tr>
+		<tr>
+			<td><b>Spec Colour:</b>
+			<td>Weight: <input type="text" id="specW" value="0.3"/>
+			<td>R: <input type="text" id="specR" value="1.0" />
+			<td>G: <input type="text" id="specG" value="0.0" />
+			<td>B: <input type="text" id="specB" value="1.0" />
+		</tr>
+		<tr>
+			<td><b>Hardness:</b>
+			<td>H:<input type="text" id="hardness" value="1000.0"/>
+		</tr>
+	</table>
+	<br/>
     Moon texture courtesy of <a href="http://maps.jpl.nasa.gov/">the Jet Propulsion Laboratory</a>.
     <br/>
     <br/>
