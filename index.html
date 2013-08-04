@@ -90,10 +90,10 @@
 		n = normalize( uNMatrix*aVertexNormal );
 		e = normalize(-mvPosition.xyz);
 		vec3 dirToLight = (uPointLightingLocation-mvPosition.xyz);
-		float d = clamp(length(dirToLight),0.0000001, 100000.0);
+		float d = length(dirToLight);
 		// Apply quadratic depth based attenuation
 		if(uUseAttenuation){
-		att = 1.0/(0.00002*d*d);
+		att = min(1.0/(0.00002*d*d), 1.0);
 		}
 		else{
 		att = 1.0;
