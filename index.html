@@ -512,7 +512,7 @@
 
         var attenuation = document.getElementById("atten").checked;
        gl.uniform1i(shaderProgram.useAttenuationUniform, attenuation);
-        if (attenuation) {
+        
             gl.uniform3f(
                 shaderProgram.ambientColorUniform,
                 parseFloat(document.getElementById("ambientR").value),
@@ -533,8 +533,7 @@
                 parseFloat(document.getElementById("pointG").value),
                 parseFloat(document.getElementById("pointB").value)
             );
-        }
-
+        
         mat4.identity(mvMatrix);
 
         mat4.translate(mvMatrix, [0, 0, -20]);
