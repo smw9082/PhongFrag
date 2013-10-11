@@ -660,64 +660,61 @@
     <input type="checkbox" id="atten" checked /> Use quadratic attenuation<br/>
     <br/>
 
+	<h2>Ambient light</h2>
+	<TABLE>
+		<TR id="row1">
+			<TH>(R,G,B)
+			<TD> <INPUT type="text" id="ambientR" value="1.0" size="1"  maxlength="5"> 
+			<TD> <INPUT type="text" id="ambientG" value="1.0" size="1"  maxlength="5">
+			<TD> <INPUT type="text" id="ambientB" value="1.0" size="1"  maxlength="5">
+	</TABLE>
+	
     <h2>Point light:</h2>
 
-    <table style="border: 0; padding: 10px;">
-        <tr>
-            <td><b>Location:</b>
-            <td>X: <input type="text" id="lightPositionX" value="0.0" />
-            <td>Y: <input type="text" id="lightPositionY" value="0.0" />
-            <td>Z: <input type="text" id="lightPositionZ" value="20.0" />
-        </tr>
-        <tr>
-            <td><b>Colour:</b>
-            <td>R: <input type="text" id="pointR" value="0.8" />
-            <td>G: <input type="text" id="pointG" value="0.8" />
-            <td>B: <input type="text" id="pointB" value="0.8" />
-        </tr>
-    </table>
+    <TABLE>
+		<TR id="row1a" >
+			<TH>(X,Y,Z)
+            <TD> <INPUT type="text" id="lightPositionX" value="0.0" size="1" maxlength="5" />
+            <TD> <INPUT type="text" id="lightPositionY" value="0.0" size="1" maxlength="5" />
+            <TD> <INPUT type="text" id="lightPositionZ" value="20.0" size="1" maxlength="5"/>
+        <TR id="row2a">
+            <TH><b>(R,G,B)</b>
+            <TD><INPUT type="text" id="pointR" value="0.8" size="1" maxlength="5" />
+            <TD><INPUT type="text" id="pointG" value="0.8" size="1" maxlength="5" />
+            <TD><INPUT type="text" id="pointB" value="0.8" size="1" maxlength="5" />
+    </TABLE>
 
-    <h2>Ambient light:</h2>
-
-    <table style="border: 0; padding: 10px;">
-        <tr>
-            <td><b>Colour:</b>
-            <td>R: <input type="text" id="ambientR" value="0.2" />
-            <td>G: <input type="text" id="ambientG" value="0.2" />
-            <td>B: <input type="text" id="ambientB" value="0.2" />
-        </tr>
-    </table>
     <br/>
 
 	<h2>Sphere Material:</h2>
-	<table style="border: 0; padding: 10px;">
+	<TABLE>
 		<tr>
-			<td><b>Amb Colour:</b>
-			<td>Weight: <input type="text" id="ambW" value="0.1"/>
-			<td>R: <input type="text" id="ambR" value="1.0" />
-			<td>G: <input type="text" id="ambG" value="1.0" />
-			<td>B: <input type="text" id="ambB" value="1.0" />
+			<TH><b>Ka,(Ra,Ga,Ba)</b>
+			<TD><input type="text" id="ambW" value="0.1" size="1"  maxlength="5"/>
+			<TD><input type="text" id="ambR" value="1.0" size="1"  maxlength="5"/>
+			<TD><input type="text" id="ambG" value="1.0" size="1"  maxlength="5"/>
+			<TD><input type="text" id="ambB" value="1.0" size="1"  maxlength="5"/>
 		</tr>
 		
 		<tr>
-			<td><b>Diff Colour:</b>
-			<td>Weight: <input type="text" id="diffW" value="0.6"/>
-			<td>R: <input type="text" id="diffR" value="0.0" />
-			<td>G: <input type="text" id="diffG" value="0.0" />
-			<td>B: <input type="text" id="diffB" value="1.0" />
+			<TH><b>Kd,(Rd,Gd,Bd)</b>
+			<TD><input type="text" id="diffW" value="0.6" size="1"  maxlength="5"/>
+			<TD><input type="text" id="diffR" value="0.0" size="1"  maxlength="5"/>
+			<TD><input type="text" id="diffG" value="0.0" size="1"  maxlength="5"/>
+			<TD><input type="text" id="diffB" value="1.0" size="1"  maxlength="5"/>
 		</tr>
 		<tr>
-			<td><b>Spec Colour:</b>
-			<td>Weight: <input type="text" id="specW" value="0.3"/>
-			<td>R: <input type="text" id="specR" value="1.0" />
-			<td>G: <input type="text" id="specG" value="0.0" />
-			<td>B: <input type="text" id="specB" value="1.0" />
+			<TH><b>Ks,(Rs,Gs,Bs)</b>
+			<TD><input type="text" id="specW" value="0.3" size="1"  maxlength="5"/>
+			<TD><input type="text" id="specR" value="1.0" size="1"  maxlength="5"/>
+			<TD><input type="text" id="specG" value="0.0" size="1"  maxlength="5"/>
+			<TD><input type="text" id="specB" value="1.0" size="1"  maxlength="5"/>
 		</tr>
 		<tr>
-			<td><b>Hardness:</b>
-			<td>H:<input type="text" id="hardness" value="1000.0"/>
+			<TD><b>Hardness:</b>
+			<TD><input id="hardness" type="text" size="2" value="1000.0" maxlength="8"/>
 		</tr>
-	</table>
+	</TABLE>
 
 </body>
 
