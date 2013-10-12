@@ -19,7 +19,7 @@
 	
 	uniform float Ka;
 	uniform float Kd;
-	uniform float Kc;
+	uniform float Ks;
 	
     varying vec2 vTextureCoord;
 	varying float att;
@@ -44,7 +44,7 @@
 			if(rdote > 0.0 )
 			{
 			float specPow=clamp(pow(rdote,hardness),0.0,1.0);
-			finalColor += att*uPointLight_I*Kc*specPow*specMat_I.rgb;
+			finalColor += att*uPointLight_I*Ks*specPow*specMat_I.rgb;
 			}
 		}
 		
