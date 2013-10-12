@@ -10,9 +10,9 @@
 <script id="shader-fs" type="x-shader/x-fragment">
 	precision mediump float;
 	
-	uniform vec4 ambMat_I;
-	uniform vec4 diffMat_I;
-	uniform vec4 specMat_I;
+	uniform vec3 ambMat_I;
+	uniform vec3 diffMat_I;
+	uniform vec3 specMat_I;
 	uniform float hardness;
 	uniform vec3 uPointLight_I;
 	uniform vec3 uAmbientLight_I;
@@ -33,18 +33,18 @@
     void main(void) {
         vec4 textureColor = texture2D(uSampler, vec2(vTextureCoord.s, vTextureCoord.t));
 				
-		vec3 finalColor = uAmbientLight_I*Ka*ambMat_I.rgb; 
+		vec3 finalColor = uAmbientLight_I*Ka*ambMat_I; 
 		
 		float ldotn = max(dot(l,n),0.0);
 		if( ldotn > 0.0)
 		{
-		finalColor+= att*uPointLight_I*Kd*ldotn*diffMat_I.rgb;
+		finalColor+= att*uPointLight_I*Kd*ldotn*diffMat_I;
 		vec3 r=normalize(-reflect(l,n));
 		float rdote=max(dot(r,e),0.0);
 			if(rdote > 0.0 )
 			{
 			float specPow=clamp(pow(rdote,hardness),0.0,1.0);
-			finalColor += att*uPointLight_I*Ks*specPow*specMat_I.rgb;
+			finalColor += att*uPointLight_I*Ks*specPow*specMat_I;
 			}
 		}
 		
@@ -555,18 +555,18 @@
         gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, moonVertexIndexBuffer);
         setMatrixUniforms();
 		/// smw - pass in uniform material data for sphere
-		gl.uniform4f(shaderProgram.materialAmb, 
+		gl.uniform3f(shaderProgram.materialAmb, 
                 parseFloat(document.getElementById("ambR").value),
                 parseFloat(document.getElementById("ambG").value),
-                parseFloat(document.getElementById("ambB").value), 1.0);
-		gl.uniform4f(shaderProgram.materialDiff, 
+                parseFloat(document.getElementById("ambB").value));
+		gl.uniform3f(shaderProgram.materialDiff, 
 				parseFloat(document.getElementById("diffR").value),
                 parseFloat(document.getElementById("diffG").value),
-                parseFloat(document.getElementById("diffB").value), 1.0);
-		gl.uniform4f(shaderProgram.materialSpec,
+                parseFloat(document.getElementById("diffB").value));
+		gl.uniform3f(shaderProgram.materialSpec,
 				parseFloat(document.getElementById("specR").value),
                 parseFloat(document.getElementById("specG").value),
-                parseFloat(document.getElementById("specB").value), 1.0);
+                parseFloat(document.getElementById("specB").value));
 		gl.uniform1f(shaderProgram.hardness, parseFloat(document.getElementById("hardness").value));
 		/// smw - pass in uniform parameters 
 		gl.uniform1f(shaderProgram.parametersAmb, document.getElementById("ambW").value);
@@ -595,9 +595,9 @@
         setMatrixUniforms();
 		
 		/// smw - pass in uniform material data
-		gl.uniform4f(shaderProgram.materialAmb, 0.0,0.0,0.5,1.0);
-		gl.uniform4f(shaderProgram.materialDiff, 0.0,0.0,0.5,1.0);
-		gl.uniform4f(shaderProgram.materialSpec, 1.0,1.0,1.0,1.0);
+		gl.uniform3f(shaderProgram.materialAmb, 0.0,0.0,0.5);
+		gl.uniform3f(shaderProgram.materialDiff, 0.0,0.0,0.5);
+		gl.uniform3f(shaderProgram.materialSpec, 1.0,1.0,1.0);
 		gl.uniform1f(shaderProgram.hardness, 1000.0);
 		/// smw - pass in uniform parameters 
 		gl.uniform1f(shaderProgram.parametersAmb, 0.2);
