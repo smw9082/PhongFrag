@@ -515,23 +515,23 @@
         
             gl.uniform3f(
                 shaderProgram.ambientColorUniform,
-                parseFloat(document.getElementById("ambientR").value),
-                parseFloat(document.getElementById("ambientG").value),
-                parseFloat(document.getElementById("ambientB").value)
+                parseFloat(document.getElementById("ambientLightR").value),
+                parseFloat(document.getElementById("ambientLightG").value),
+                parseFloat(document.getElementById("ambientLightB").value)
             );
 
             gl.uniform3f(
                 shaderProgram.pointLightingLocationUniform,
-                parseFloat(document.getElementById("lightPositionX").value),
-                parseFloat(document.getElementById("lightPositionY").value),
-                parseFloat(document.getElementById("lightPositionZ").value)
+                parseFloat(document.getElementById("pointLightX").value),
+                parseFloat(document.getElementById("pointLightY").value),
+                parseFloat(document.getElementById("pointLightZ").value)
             );
 
             gl.uniform3f(
                 shaderProgram.pointLightingColorUniform,
-                parseFloat(document.getElementById("pointR").value),
-                parseFloat(document.getElementById("pointG").value),
-                parseFloat(document.getElementById("pointB").value)
+                parseFloat(document.getElementById("pointLightR").value),
+                parseFloat(document.getElementById("pointLightG").value),
+                parseFloat(document.getElementById("pointLightB").value)
             );
         
         mat4.identity(mvMatrix);
@@ -664,9 +664,9 @@
 	<TABLE>
 		<TR id="row1">
 			<TH>(R,G,B)
-			<TD> <INPUT type="text" id="ambientR" value="1.0" size="1"  maxlength="5"> 
-			<TD> <INPUT type="text" id="ambientG" value="1.0" size="1"  maxlength="5">
-			<TD> <INPUT type="text" id="ambientB" value="1.0" size="1"  maxlength="5">
+			<TD> <INPUT type="text" id="ambientLightR" value="1.0" size="1"  maxlength="5"> 
+			<TD> <INPUT type="text" id="ambientLightG" value="1.0" size="1"  maxlength="5">
+			<TD> <INPUT type="text" id="ambientLightB" value="1.0" size="1"  maxlength="5">
 	</TABLE>
 	
     <h2>Point light:</h2>
@@ -674,14 +674,14 @@
     <TABLE>
 		<TR id="row1a" >
 			<TH>(X,Y,Z)
-            <TD> <INPUT type="text" id="lightPositionX" value="0.0" size="1" maxlength="5" />
-            <TD> <INPUT type="text" id="lightPositionY" value="0.0" size="1" maxlength="5" />
-            <TD> <INPUT type="text" id="lightPositionZ" value="20.0" size="1" maxlength="5"/>
+            <TD> <INPUT type="text" id="pointLightX" value="0.0" size="1" maxlength="5" />
+            <TD> <INPUT type="text" id="pointLightY" value="0.0" size="1" maxlength="5" />
+            <TD> <INPUT type="text" id="pointLightZ" value="20.0" size="1" maxlength="5"/>
         <TR id="row2a">
             <TH><b>(R,G,B)</b>
-            <TD><INPUT type="text" id="pointR" value="0.8" size="1" maxlength="5" />
-            <TD><INPUT type="text" id="pointG" value="0.8" size="1" maxlength="5" />
-            <TD><INPUT type="text" id="pointB" value="0.8" size="1" maxlength="5" />
+            <TD><INPUT type="text" id="pointLightR" value="0.8" size="1" maxlength="5" />
+            <TD><INPUT type="text" id="pointLightG" value="0.8" size="1" maxlength="5" />
+            <TD><INPUT type="text" id="pointLightB" value="0.8" size="1" maxlength="5" />
     </TABLE>
 
     <br/>
