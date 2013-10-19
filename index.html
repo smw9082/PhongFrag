@@ -33,18 +33,18 @@
     void main(void) {
         vec4 textureColor = texture2D(uSampler, vec2(vTextureCoord.s, vTextureCoord.t));
 				
-		vec3 finalColor = uAmbientLight_I*Ka*ambMat_I; 
+		vec3 finalColor = Ka*uAmbientLight_I*ambMat_I; 
 		
 		float ldotn = max(dot(l,n),0.0);
 		if( ldotn > 0.0)
 		{
-		finalColor+= att*uPointLight_I*Kd*ldotn*diffMat_I;
+		finalColor+= att*Kd*uPointLight_I*ldotn*diffMat_I;
 		vec3 r=normalize(-reflect(l,n));
 		float rdote=max(dot(r,e),0.0);
 			if(rdote > 0.0 )
 			{
 			float specPow=clamp(pow(rdote,hardness),0.0,1.0);
-			finalColor += att*uPointLight_I*Ks*specPow*specMat_I;
+			finalColor += att*Ks*uPointLight_I*specPow*specMat_I;
 			}
 		}
 		
@@ -572,6 +572,7 @@
 		gl.uniform1f(shaderProgram.parametersAmb, document.getElementById("ambW").value);
 		gl.uniform1f(shaderProgram.parametersDiff, document.getElementById("diffW").value);
 		gl.uniform1f(shaderProgram.parametersSpec, document.getElementById("specW").value);
+		/// smw - draw sphere
         gl.drawElements(gl.TRIANGLES, moonVertexIndexBuffer.numItems, gl.UNSIGNED_SHORT, 0);
         mvPopMatrix();
 
@@ -595,14 +596,21 @@
         setMatrixUniforms();
 		
 		/// smw - pass in uniform material data
-		gl.uniform3f(shaderProgram.materialAmb, 0.0,0.0,0.5);
-		gl.uniform3f(shaderProgram.materialDiff, 0.0,0.0,0.5);
-		gl.uniform3f(shaderProgram.materialSpec, 1.0,1.0,1.0);
-		gl.uniform1f(shaderProgram.hardness, 1000.0);
+		gl.uniform3f(shaderProgram.materialAmb, document.getElementById("cubeAR").value,document.getElementById("cubeAG").value,document.getElementById("cubeAB").value);
+		gl.uniform3f(shaderProgram.materialDiff,
+		 document.getElementById("cubeDR").value,document.getElementById("cubeDG").value,document.getElementById("cubeDB").value);
+		gl.uniform3f(shaderProgram.materialSpec, 
+		 document.getElementById("cubeSR").value,document.getElementById("cubeSG").value,document.getElementById("cubeSB").value);
+		gl.uniform1f(shaderProgram.hardness, 
+		document.getElementById("cubeH").value);
 		/// smw - pass in uniform parameters 
-		gl.uniform1f(shaderProgram.parametersAmb, 0.2);
-		gl.uniform1f(shaderProgram.parametersDiff, 0.6);
-		gl.uniform1f(shaderProgram.parametersSpec, 0.2);
+		gl.uniform1f(shaderProgram.parametersAmb,
+		document.getElementById("cubeAK").value);
+		gl.uniform1f(shaderProgram.parametersDiff,
+		document.getElementById("cubeDK").value);
+		gl.uniform1f(shaderProgram.parametersSpec,
+		document.getElementById("cubeSK").value);
+		/// draw cube
         gl.drawElements(gl.TRIANGLES, cubeVertexIndexBuffer.numItems, gl.UNSIGNED_SHORT, 0);
         mvPopMatrix();
     }
@@ -714,6 +722,39 @@
 		</tr>
 	</TABLE>
 
+	</TABLE>
+
+    <br/>
+
+	<h2>Cube Material:</h2>
+	<TABLE>
+		<tr>
+			<TH><b>Ka,(Ra,Ga,Ba)</b>
+			<TD><input type="text" id="cubeAK" value="0.1" size="1"  maxlength="5"/>
+			<TD><input type="text" id="cubeAR" value="1.0" size="1"  maxlength="5"/>
+			<TD><input type="text" id="cubeAG" value="1.0" size="1"  maxlength="5"/>
+			<TD><input type="text" id="cubeAB" value="1.0" size="1"  maxlength="5"/>
+		</tr>
+		
+		<tr>
+			<TH><b>Kd,(Rd,Gd,Bd)</b>
+			<TD><input type="text" id="cubeDK" value="0.6" size="1"  maxlength="5"/>
+			<TD><input type="text" id="cubeDR" value="0.0" size="1"  maxlength="5"/>
+			<TD><input type="text" id="cubeDG" value="0.0" size="1"  maxlength="5"/>
+			<TD><input type="text" id="cubeDB" value="1.0" size="1"  maxlength="5"/>
+		</tr>
+		<tr>
+			<TH><b>Ks,(Rs,Gs,Bs)</b>
+			<TD><input type="text" id="cubeSK" value="0.3" size="1"  maxlength="5"/>
+			<TD><input type="text" id="cubeSR" value="1.0" size="1"  maxlength="5"/>
+			<TD><input type="text" id="cubeSG" value="0.0" size="1"  maxlength="5"/>
+			<TD><input type="text" id="cubeSB" value="1.0" size="1"  maxlength="5"/>
+		</tr>
+		<tr>
+			<TD><b>Hardness:</b>
+			<TD><input id="cubeH" type="text" size="2" value="1000.0" maxlength="8"/>
+		</tr>
+	</TABLE>
 </body>
 
 </html>
