@@ -556,22 +556,22 @@
         setMatrixUniforms();
 		/// smw - pass in uniform material data for sphere
 		gl.uniform3f(shaderProgram.materialAmb, 
-                parseFloat(document.getElementById("ambR").value),
-                parseFloat(document.getElementById("ambG").value),
-                parseFloat(document.getElementById("ambB").value));
+                parseFloat(document.getElementById("sphereAR").value),
+                parseFloat(document.getElementById("sphereAG").value),
+                parseFloat(document.getElementById("sphereAB").value));
 		gl.uniform3f(shaderProgram.materialDiff, 
-				parseFloat(document.getElementById("diffR").value),
-                parseFloat(document.getElementById("diffG").value),
-                parseFloat(document.getElementById("diffB").value));
+				parseFloat(document.getElementById("sphereDR").value),
+                parseFloat(document.getElementById("sphereDG").value),
+                parseFloat(document.getElementById("sphereDB").value));
 		gl.uniform3f(shaderProgram.materialSpec,
-				parseFloat(document.getElementById("specR").value),
-                parseFloat(document.getElementById("specG").value),
-                parseFloat(document.getElementById("specB").value));
-		gl.uniform1f(shaderProgram.hardness, parseFloat(document.getElementById("hardness").value));
+				parseFloat(document.getElementById("sphereSR").value),
+                parseFloat(document.getElementById("sphereSG").value),
+                parseFloat(document.getElementById("sphereSB").value));
+		gl.uniform1f(shaderProgram.hardness, parseFloat(document.getElementById("sphereH").value));
 		/// smw - pass in uniform parameters 
-		gl.uniform1f(shaderProgram.parametersAmb, document.getElementById("ambW").value);
-		gl.uniform1f(shaderProgram.parametersDiff, document.getElementById("diffW").value);
-		gl.uniform1f(shaderProgram.parametersSpec, document.getElementById("specW").value);
+		gl.uniform1f(shaderProgram.parametersAmb, document.getElementById("sphereAK").value);
+		gl.uniform1f(shaderProgram.parametersDiff, document.getElementById("sphereDK").value);
+		gl.uniform1f(shaderProgram.parametersSpec, document.getElementById("sphereSK").value);
 		/// smw - draw sphere
         gl.drawElements(gl.TRIANGLES, moonVertexIndexBuffer.numItems, gl.UNSIGNED_SHORT, 0);
         mvPopMatrix();
@@ -696,29 +696,29 @@
 	<TABLE>
 		<tr>
 			<TH><b>Ka,(Ra,Ga,Ba)</b>
-			<TD><input type="text" id="ambW" value="0.1" size="1"  maxlength="5"/>
-			<TD><input type="text" id="ambR" value="1.0" size="1"  maxlength="5"/>
-			<TD><input type="text" id="ambG" value="1.0" size="1"  maxlength="5"/>
-			<TD><input type="text" id="ambB" value="1.0" size="1"  maxlength="5"/>
+			<TD><input type="text" id="sphereAK" value="0.1" size="1"  maxlength="5"/>
+			<TD><input type="text" id="sphereAR" value="1.0" size="1"  maxlength="5"/>
+			<TD><input type="text" id="sphereAG" value="1.0" size="1"  maxlength="5"/>
+			<TD><input type="text" id="sphereAB" value="1.0" size="1"  maxlength="5"/>
 		</tr>
 		
 		<tr>
 			<TH><b>Kd,(Rd,Gd,Bd)</b>
-			<TD><input type="text" id="diffW" value="0.6" size="1"  maxlength="5"/>
-			<TD><input type="text" id="diffR" value="0.0" size="1"  maxlength="5"/>
-			<TD><input type="text" id="diffG" value="0.0" size="1"  maxlength="5"/>
-			<TD><input type="text" id="diffB" value="1.0" size="1"  maxlength="5"/>
+			<TD><input type="text" id="sphereDK" value="0.6" size="1"  maxlength="5"/>
+			<TD><input type="text" id="sphereDR" value="0.0" size="1"  maxlength="5"/>
+			<TD><input type="text" id="sphereDG" value="0.0" size="1"  maxlength="5"/>
+			<TD><input type="text" id="sphereDB" value="1.0" size="1"  maxlength="5"/>
 		</tr>
 		<tr>
 			<TH><b>Ks,(Rs,Gs,Bs)</b>
-			<TD><input type="text" id="specW" value="0.3" size="1"  maxlength="5"/>
-			<TD><input type="text" id="specR" value="1.0" size="1"  maxlength="5"/>
-			<TD><input type="text" id="specG" value="0.0" size="1"  maxlength="5"/>
-			<TD><input type="text" id="specB" value="1.0" size="1"  maxlength="5"/>
+			<TD><input type="text" id="sphereSK" value="0.3" size="1"  maxlength="5"/>
+			<TD><input type="text" id="sphereSR" value="1.0" size="1"  maxlength="5"/>
+			<TD><input type="text" id="sphereSG" value="0.0" size="1"  maxlength="5"/>
+			<TD><input type="text" id="sphereSB" value="1.0" size="1"  maxlength="5"/>
 		</tr>
 		<tr>
 			<TD><b>Hardness:</b>
-			<TD><input id="hardness" type="text" size="2" value="1000.0" maxlength="8"/>
+			<TD><input id="sphereH" type="text" size="2" value="1000.0" maxlength="8"/>
 		</tr>
 	</TABLE>
 
